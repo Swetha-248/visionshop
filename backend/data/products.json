@@ -1,0 +1,149 @@
+[
+  {
+    "id": "1",
+    "name": "VisionPro Max Laptop",
+    "brand": "TechCore",
+    "price": 1499.99,
+    "category": "Electronics",
+    "rating": 4.8,
+    "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2071&auto=format&fit=crop",
+    "description": "Experience unparalleled performance with the VisionPro Max. Powered by our latest AI-optimized processor, this machine is built for the next generation of creative professional work. With a crystal-clear 120Hz display and all-day battery life.",
+    "isRecommended": true,
+    "aiReasoning": "Matches your high-performance computing needs and recent creative software searches.",
+    "specs": {
+      "Processor": "VC-3 AI Octa-core",
+      "RAM": "32GB DDR5",
+      "Battery": "20 Hours",
+      "Display": "16\" Liquid Retina",
+      "Weight": "1.8kg"
+    },
+    "reviews": [
+      "The battery life is insane, lasted my whole flight and more.",
+      "A bit expensive but definitely worth it for the speed.",
+      "The AI cooling keeps it quiet even during heavy rendering.",
+      "Heavier than I expected, but the power makes up for it."
+    ],
+    "aiSummary": {
+      "pros": ["Superior AI-optimized performance", "Industry-leading battery life", "Silent cooling system"],
+      "cons": ["Premium price point", "Slightly heavier than competitors"],
+      "verdict": "The best choice for professionals who need uncompromised power on the go."
+    }
+  },
+  {
+    "id": "2",
+    "name": "CloudWalk Sneakers",
+    "brand": "UrbanStep",
+    "price": 129.50,
+    "category": "Apparel",
+    "rating": 4.5,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop",
+    "description": "The most comfortable sneakers you'll ever wear. Using proprietary cloud-foam technology and a breathable mesh upper.",
+    "isRecommended": false,
+    "aiReasoning": "Trending in your city and matches your preference for lightweight footwear.",
+    "specs": {
+      "Material": "Recycled Mesh",
+      "Sole": "CloudFoam 2.0",
+      "Weight": "250g",
+      "Style": "Minimalist"
+    },
+    "reviews": [
+      "Feels like walking on clouds, literally.",
+      "Great for daily walking, maybe not for high-impact running.",
+      "Breathable and looks great with jeans.",
+      "The white gets dirty pretty quickly."
+    ],
+    "aiSummary": {
+      "pros": ["Exceptional comfort", "Iconic minimalist design", "Lightweight feel"],
+      "cons": ["Stains easily", "Limited arch support for runners"],
+      "verdict": "Perfect daily driver for urban commuters seeking comfort and style."
+    }
+  },
+  {
+    "id": "3",
+    "name": "SoundSilence Elite",
+    "brand": "AudioPure",
+    "price": 299.00,
+    "category": "Electronics",
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=2070&auto=format&fit=crop",
+    "description": "Premium active noise cancelling headphones that isolate you from the world. Professional grade audio fidelity.",
+    "isRecommended": true,
+    "aiReasoning": "AI Pick - Outstanding noise cancellation and long-term comfort reviews.",
+    "specs": {
+      "ANC": "Hybrid Active 40dB",
+      "Battery": "40 Hours",
+      "Drivers": "45mm Neodymium",
+      "Connectivity": "BT 5.3 / Wired"
+    },
+    "reviews": [
+      "The noise cancellation is better than Sony's.",
+      "I wear them for 8 hours at work with no pain.",
+      "Touch controls can be a bit sensitive sometimes.",
+      "Soundstage is incredibly wide for closed-back cans."
+    ],
+    "aiSummary": {
+      "pros": ["Top-tier noise cancellation", "Extremely comfortable ear pads", "Long battery life"],
+      "cons": ["Sensitive touch controls", "Bulky carrying case"],
+      "verdict": "A must-have for frequent travelers and open-office workers."
+    }
+  },
+  {
+    "id": "4",
+    "name": "Focus Watch Ultra",
+    "brand": "TimeMaster",
+    "price": 399.00,
+    "category": "Electronics",
+    "rating": 4.7,
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=2099&auto=format&fit=crop",
+    "description": "A smartwatch designed for extreme athletes. GPS, heart rate, and blood oxygen monitoring with a rugged titanium case.",
+    "isRecommended": false,
+    "aiReasoning": "Best rated for outdoor durability in its price category.",
+    "specs": {
+      "Case": "Titanium Grade 5",
+      "Display": "Sapphire Crystal",
+      "Sensors": "GPS, HR, SpO2, ECG",
+      "Water": "100m Depth"
+    },
+    "reviews": [
+      "Survives my hiking trips without a scratch.",
+      "The interface is fast and the battery lasts a week.",
+      "A bit chunky on smaller wrists.",
+      "Syncing with some Android phones was tricky."
+    ],
+    "aiSummary": {
+      "pros": ["Ultra-durable build", "Highly accurate GPS", "Week-long battery life"],
+      "cons": ["Large form factor", "Inconsistent third-party app sync"],
+      "verdict": "Reliable companion for serious outdoor enthusiasts and athletes."
+    }
+  },
+  {
+    "id": "5",
+    "name": "UltraSlim Air",
+    "brand": "TechCore",
+    "price": 999.00,
+    "category": "Electronics",
+    "rating": 4.6,
+    "image": "https://images.unsplash.com/photo-1517336710211-4d235895f85e?q=80&w=1974&auto=format&fit=crop",
+    "description": "The ultimate portable laptop. Thinner than a notebook, yet powerful enough for all your daily tasks.",
+    "isRecommended": false,
+    "aiReasoning": "Highly portable alternative to your recent laptop searches.",
+    "specs": {
+      "Processor": "VC-2 AI Quad-core",
+      "RAM": "16GB DDR5",
+      "Battery": "12 Hours",
+      "Display": "13\" Retina",
+      "Weight": "1.2kg"
+    },
+    "reviews": [
+      "I forget it's even in my bag.",
+      "Perfect for office work and Netflix.",
+      "Can get warm under heavy load.",
+      "The limited ports mean I need a dongle."
+    ],
+    "aiSummary": {
+      "pros": ["Incredibly light and thin", "Beautiful screen", "Competitive price"],
+      "cons": ["Thermal throttling", "Limited port selection"],
+      "verdict": "Ideal for students and light business travel where weight is the priority."
+    }
+  }
+]
