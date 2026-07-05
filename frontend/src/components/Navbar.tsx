@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, MessageSquare, User, Menu, X, Sun, Moon, Sparkles } from 'lucide-react';
 import { useThemeStore } from '../store/useThemeStore';
+import { useStore } from '../store/useStore';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { isDark, toggleTheme } = useThemeStore();
+  const user = useStore((state) => state.user);
 
   const navLinks = [
     { name: 'Shop', path: '/search', icon: <ShoppingBag size={20} /> },
@@ -51,9 +53,9 @@ const Navbar: React.FC = () => {
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <Link to="/profile" className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white transition-all">
+          <Link to="/login" className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full font-medium hover:bg-primary hover:text-white transition-all">
             <User size={20} />
-            Profile
+            {user ? user.name : 'Login'}
           </Link>
         </div>
 
@@ -82,9 +84,9 @@ const Navbar: React.FC = () => {
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
             {isDark ? 'Light Mode' : 'Dark Mode'}
           </button>
-          <Link to="/profile" onClick={() => setIsOpen(false)} className="flex items-center gap-3 text-lg font-medium">
+          <Link to="/login" onClick={() => setIsOpen(false)} className="flex items-center gap-3 text-lg font-medium">
             <User size={20} />
-            Profile
+            {user ? user.name : 'Login'}
           </Link>
         </div>
       )}

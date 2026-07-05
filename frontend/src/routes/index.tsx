@@ -6,6 +6,7 @@ import AssistantPage from '../pages/AssistantPage';
 import ProductDetails from '../pages/ProductDetails';
 import ComparePage from '../pages/ComparePage';
 import ProfilePage from '../pages/ProfilePage';
+import LoginPage from '../pages/LoginPage';
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
       { path: 'product/:id', element: <ProductDetails /> },
       { path: 'compare', element: <ComparePage /> },
       { path: 'profile', element: <ProfilePage /> },
+      { path: 'login', element: <LoginPage /> },
     ],
   },
 ]);

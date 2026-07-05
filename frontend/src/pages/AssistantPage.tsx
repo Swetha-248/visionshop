@@ -11,6 +11,7 @@ const AssistantPage: React.FC = () => {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -43,21 +44,30 @@ const AssistantPage: React.FC = () => {
   };
 
   const handleImageUpload = () => {
-    // Simulated visual search
+    fileInputRef.current?.click();
+  };
+
+  const handleImageSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
     setIsTyping(true);
-    setTimeout(async () => {
-      try {
-        const data = await aiService.visualSearch();
-        addChatMessage({ role: 'user', content: "[Uploaded Image]" });
-        addChatMessage({ 
-          role: 'assistant', 
-          content: data.analysis,
-          suggestedProducts: data.results
-        });
-      } finally {
-        setIsTyping(false);
-      }
-    }, 1500);
+
+    try {
+      addChatMessage({ role: 'user', content: '[Uploaded Image]' });
+      const data = await aiService.visualSearch(file);
+      addChatMessage({
+        role: 'assistant',
+        content: data.analysis,
+        suggestedProducts: data.results,
+      });
+    } catch (error) {
+      console.error('Visual search error', error);
+      addChatMessage({ role: 'assistant', content: 'Sorry, I could not process that image right now.' });
+    } finally {
+      setIsTyping(false);
+      event.target.value = '';
+    }
   };
 
   return (
@@ -178,6 +188,13 @@ const AssistantPage: React.FC = () => {
             >
               <ImageIcon size={24} />
             </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageSelected}
+            />
             <input 
               value={input}
               onChange={(e) => setInput(e.target.value)}

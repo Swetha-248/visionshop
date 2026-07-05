@@ -42,9 +42,15 @@ export const aiService = {
     return response.data;
   },
   
-  visualSearch: async () => {
-    // In a real app, this might take an image, but for simulated demo we just call the endpoint
-    const response = await api.post<{ analysis: string; results: Product[] }>('/search/image');
+  visualSearch: async (imageFile?: File) => {
+    const formData = new FormData();
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+
+    const response = await api.post<{ analysis: string; results: Product[] }>('/search/image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
   }
 };

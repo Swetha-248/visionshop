@@ -131,7 +131,7 @@ router.post('/search/image', upload.single('image'), async (req, res) => {
   }
 
   const pythonBinary = process.env.CLIP_PYTHON_PATH || 'C:\\Users\\Home\\AppData\\Local\\Programs\\Python\\Python311\\python.exe';
-  const scriptPath = path.join(__dirname, '..', 'clip_search.py');
+  const scriptPath = path.join(__dirname, '..', 'AI services', 'clip_search.py');
 
   execFile(pythonBinary, [scriptPath, tempImagePath, JSON.stringify(catalog), inputText], (error, stdout) => {
     try {

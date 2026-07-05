@@ -1,10 +1,12 @@
 import React from 'react';
 import { User, Bell, Shield, CreditCard, Heart, ShoppingBag, Settings, LogOut, Sun, ChevronRight } from 'lucide-react';
 import { useThemeStore } from '../store/useThemeStore';
+import { useStore } from '../store/useStore';
 import { Button } from '../components/ui/Button';
 
 const ProfilePage: React.FC = () => {
   const { isDark, toggleTheme } = useThemeStore();
+  const user = useStore((state) => state.user);
 
   const menuItems = [
     { icon: <Heart className="text-pink-500" />, label: 'Wishlist', desc: '12 items saved', path: '/wishlist' },
@@ -27,8 +29,8 @@ const ProfilePage: React.FC = () => {
         </div>
         
         <div className="text-center md:text-left flex-1">
-          <h1 className="text-3xl font-black">Alex Rivers</h1>
-          <p className="text-slate-500">Member since February 2024</p>
+          <h1 className="text-3xl font-black">{user?.name || 'Alex Rivers'}</h1>
+          <p className="text-slate-500">{user?.email || 'Member since February 2024'}</p>
           <div className="flex flex-wrap gap-2 mt-4 justify-center md:justify-start">
              <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold ring-1 ring-primary/20">ELITE MEMBER</span>
              <span className="bg-slate-100 dark:bg-slate-800 text-slate-500 px-3 py-1 rounded-full text-xs font-bold">PRO ACCOUNT</span>
