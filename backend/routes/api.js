@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const https = require('https');
 const path = require('path');
 const { execFile } = require('child_process');
 const router = express.Router();
@@ -84,30 +85,106 @@ router.get('/products/:id', async (req, res) => {
   }
 });
 
-// Chat endpoint (Simulated AI Agent)
+// Helper to call Google Gemini API with JSON output instruction
+const callGemini = (message, catalog) => {
+  return new Promise((resolve, reject) => {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return reject(new Error('GEMINI_API_KEY is not defined'));
+    }
+
+    const systemInstruction = `You are a friendly, helpful AI shopping assistant for VisionShop.
+Here is the current catalog of products:
+${catalog.map(p => `- ID: "${p.id}", Name: "${p.name}", Brand: "${p.brand}", Price: $${p.price}, Category: "${p.category}", Rating: ${p.rating}, Description: "${p.description}"`).join('\n')}
+
+Analyze the user's message and reply helpfully. If they are asking about or looking for products, suggest the relevant products from the catalog.
+Your response MUST be a JSON object with the following structure:
+{
+  "response": "Your friendly conversational response to the user. Use markdown for lists/bullet points and bold text if helpful.",
+  "suggestedProducts": ["ID1", "ID2"] // String IDs of products from the catalog that are relevant to the user's message. Use an empty array if no products are relevant.
+}`;
+
+    const payload = JSON.stringify({
+      contents: [{
+        parts: [{ text: `${systemInstruction}\n\nUser Message: ${message}` }]
+      }],
+      generationConfig: {
+        responseMimeType: "application/json"
+      }
+    });
+
+    const options = {
+      hostname: 'generativelanguage.googleapis.com',
+      path: `/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload)
+      }
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => {
+        if (res.statusCode !== 200) {
+          return reject(new Error(`Gemini API returned status ${res.statusCode}: ${data}`));
+        }
+        try {
+          const parsed = JSON.parse(data);
+          const text = parsed.candidates[0].content.parts[0].text;
+          const result = JSON.parse(text);
+          resolve(result);
+        } catch (err) {
+          reject(err);
+        }
+      });
+    });
+
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+};
+
+// Chat endpoint (AI Agent using Gemini API)
 router.post('/chat', async (req, res) => {
   const { message } = req.body;
   const msg = message.toLowerCase();
   
   const catalog = (await Product.find({}).lean()).length > 0 ? await Product.find({}).lean() : fallbackProducts;
-  let response = "I'm your VisionShop AI assistant. I can help you find products, compare them, or summarize reviews. What are you looking for?";
-  let suggestedProducts = [];
 
-  if (msg.includes('laptop') || msg.includes('macbook') || msg.includes('computer')) {
-    response = "I've found two great laptops: the high-performance VisionPro Max and the portable UltraSlim Air. Which one sounds better for your needs?";
-    suggestedProducts = catalog.filter(p => p.name.includes('Laptop') || p.name.includes('Air'));
-  } else if (msg.includes('shoes') || msg.includes('sneakers') || msg.includes('walk')) {
-    response = "The CloudWalk Sneakers are our top choice for comfort right now. They're trending in your area!";
-    suggestedProducts = catalog.filter(p => p.name.includes('Sneakers'));
-  } else if (msg.includes('budget') || msg.includes('cheap') || msg.includes('under')) {
-    const budget = catalog.sort((a, b) => a.price - b.price).slice(0, 2);
-    response = "Looking for value? Here are some of our best deals under $500.";
-    suggestedProducts = budget;
-  } else if (msg.includes('better') || msg.includes('compare')) {
-    response = "To compare products, just add them to your comparison list. For example, the VisionPro Max has better battery life than the UltraSlim Air.";
+  try {
+    const geminiResult = await callGemini(message, catalog);
+    const recommendedIds = geminiResult.suggestedProducts || [];
+    const suggestedProducts = catalog.filter(p => recommendedIds.includes(p.id));
+    return res.json({
+      response: geminiResult.response,
+      suggestedProducts
+    });
+  } catch (error) {
+    console.error('Gemini Chat Error, falling back to simulation:', error.message);
+    
+    // Fallback simulation logic
+    let response = "I'm your VisionShop AI assistant. I can help you find products, compare them, or summarize reviews. What are you looking for?";
+    let suggestedProducts = [];
+
+    if (msg.includes('laptop') || msg.includes('macbook') || msg.includes('computer')) {
+      response = "I've found two great laptops: the high-performance VisionPro Max and the portable UltraSlim Air. Which one sounds better for your needs?";
+      suggestedProducts = catalog.filter(p => p.name.includes('Laptop') || p.name.includes('Air'));
+    } else if (msg.includes('shoes') || msg.includes('sneakers') || msg.includes('walk')) {
+      response = "The CloudWalk Sneakers are our top choice for comfort right now. They're trending in your area!";
+      suggestedProducts = catalog.filter(p => p.name.includes('Sneakers'));
+    } else if (msg.includes('budget') || msg.includes('cheap') || msg.includes('under')) {
+      const budget = catalog.sort((a, b) => a.price - b.price).slice(0, 2);
+      response = "Looking for value? Here are some of our best deals under $500.";
+      suggestedProducts = budget;
+    } else if (msg.includes('better') || msg.includes('compare')) {
+      response = "To compare products, just add them to your comparison list. For example, the VisionPro Max has better battery life than the UltraSlim Air.";
+    }
+
+    return res.json({ response, suggestedProducts });
   }
-
-  res.json({ response, suggestedProducts });
 });
 
 // Visual search connected to the product catalog with CLIP-style matching
