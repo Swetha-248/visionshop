@@ -1,0 +1,7 @@
+services:
+  - type: static_site
+    name: visionshop-frontend
+    env: static
+    branch: main
+    buildCommand: cd frontend && npm install --include=dev && npm run build
+    publishPath: frontend/dist
